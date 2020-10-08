@@ -1,7 +1,10 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class Cub extends JPanel {
 
@@ -23,7 +26,7 @@ public class Cub extends JPanel {
 
     private int cages;
 
-    Cub() {
+    public Cub() {
 
         setLayout(null);
 
@@ -38,8 +41,8 @@ public class Cub extends JPanel {
 
         currentOrientation = Orientation.UP;
         currentLine = new int[SIZE];
-
-        for(int i = 0; i < SIZE; i++) currentLine[i] = i;
+    
+        IntStream.range(0, SIZE).forEach(i -> currentLine[i] = i);
 
         currentValue = Value.ZERO;
 
@@ -99,6 +102,7 @@ public class Cub extends JPanel {
                     }
                     case 2 -> rotation();
                     case 3 -> shift();
+                    default -> throw new IllegalArgumentException("Invalid mouse button");
                 }
             }
         });
@@ -240,6 +244,7 @@ public class Cub extends JPanel {
                 top.rotation(Orientation.LEFT);
                 bottom.rotation(Orientation.RIGHT);
             }
+            default -> throw new IllegalArgumentException("Invalid orientation");
         }
 
         repaint();
@@ -294,6 +299,7 @@ public class Cub extends JPanel {
                 if(Arrays.equals(currentLine, new int[]{0, 1, 2})) top.rotation(Orientation.LEFT);
                 else if(Arrays.equals(currentLine, new int[]{6, 7, 8})) bottom.rotation(Orientation.RIGHT);
             }
+            default -> throw new IllegalArgumentException("Invalid orientation");
         }
 
         changeMotion();
@@ -401,10 +407,3 @@ public class Cub extends JPanel {
  }
 }
 
-enum Value {
-    CROSS, ZERO, NULL
-}
-
-enum Orientation {
-    UP, DOWN, LEFT, RIGHT
-}
